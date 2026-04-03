@@ -30,7 +30,7 @@
         #intro-video {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Используем contain, так как видео уже подготовлены под размер */
+            object-fit: contain;
             display: block;
         }
 
@@ -86,9 +86,116 @@
         .price-old { color: #888; text-decoration: line-through; font-size: 0.8rem; margin-left: 5px; }
 
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 5000; padding: 20px; }
-        .modal-content { background: var(--card); padding: 25px; border-radius: 20px; width: 100%; max-width: 500px; position: relative; max-height: 90vh; overflow-y: auto; text-align: center; border: 1px solid rgba(255,153,0,0.3); color: var(--text); }
-        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 2rem; cursor: pointer; color: #999; transition: 0.3s; }
+        
+        .modal-content {
+            background: var(--card);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+            text-align: left;
+            color: var(--text);
+            padding: 0; 
+            border: none;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .m-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: #fff;
+            padding: 10px;
+        }
+
+        .m-gallery img {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 12px;
+            background: #f9f9f9;
+        }
+
+        .modal-content h2 {
+            padding: 20px 25px 5px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .modal-content .price-box-modal {
+            padding: 0 25px 15px;
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+        }
+
+        #m-desc {
+            padding: 15px 25px;
+            margin: 0;
+            font-size: 0.95rem;
+            color: var(--text);
+            opacity: 0.9;
+            background: rgba(128, 128, 128, 0.03);
+            border-top: 1px solid rgba(128, 128, 128, 0.1) !important;
+            white-space: pre-line;
+            line-height: 1.6;
+            max-height: none; 
+            overflow-y: visible;
+        }
+
+        .modal-content .btn-buy {
+            margin: 20px 25px 30px;
+            width: calc(100% - 50px);
+            height: 55px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .modal-content .btn-buy:hover {
+            transform: scale(1.02);
+            filter: brightness(1.1);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+            transition: 0.3s;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(4px);
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
         .close-btn:hover { color: var(--primary); transform: rotate(90deg); }
+
+        .add-p-btn { 
+            position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: var(--primary); color: white; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 2rem; cursor: pointer; box-shadow: var(--glow); z-index: 3000; border: none; 
+        }
+
+        .admin-controls { position: absolute; top: 5px; right: 5px; display: none; gap: 5px; z-index: 20; }
+        .admin-btn-card { width: 30px; height: 30px; border-radius: 8px; border: none; cursor: pointer; color: white; display: flex; align-items: center; justify-content: center; }
+        .admin-input { width: 100%; padding: 12px; background: var(--input); border: 1px solid rgba(128,128,128,0.2); color: var(--text); border-radius: 10px; margin-bottom: 12px; outline: none; text-align: left; }
 
         footer { background: var(--card); padding: 40px 20px; border-top: 1px solid rgba(255,153,0,0.2); margin-top: 50px; text-align: center; }
         .social-links { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
@@ -131,9 +238,10 @@
 
 <footer>
     <div class="footer-info">
-        <h3><i class="fas fa-map-marker-alt"></i> Наш адрес:</h3>
-        <p>г. Душанбе, рынок "Корвон"</p>
+        <h3>2026 GooDok.TJ/Душанбе</h3>
         <div class="social-links">
+            <a href="https://www.instagram.com/goodok.tj?igsh=bWRyMm9iMDZzcm1j" class="social-item" style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);"><i class="fab fa-instagram"></i> Instagram</a>
+            
             <a href="https://wa.me/992555572988" class="social-item" style="background:#25D366;"><i class="fab fa-whatsapp"></i> WhatsApp</a>
             <a href="https://t.me/Goodok_tj" class="social-item" style="background:#0088cc;"><i class="fab fa-telegram"></i> Telegram</a>
             <div class="social-item" style="background:#444;"><i class="fas fa-phone"></i> +992 555 572 988</div>
@@ -142,9 +250,9 @@
 </footer>
 
 <div id="admin-overlay" class="overlay">
-    <div class="modal-content" style="text-align: left;">
+    <div class="modal-content" style="text-align: left; padding: 25px;">
         <span class="close-btn" onclick="closeAdmin()">&times;</span>
-        <h2 style="color:var(--primary); margin-bottom:20px;">Управление товаром</h2>
+        <h2 style="color:var(--primary); margin-bottom:20px; padding:0;">Управление товаром</h2>
         <input type="hidden" id="edit-id">
         <input type="text" id="p-name" class="admin-input" placeholder="Название товара">
         <select id="p-cat" class="admin-input">
@@ -177,29 +285,34 @@
             <input type="number" id="p-old-price" class="admin-input" placeholder="Старая цена (для акции)">
         </div>
         <textarea id="p-desc" class="admin-input" placeholder="Характеристики (Процессор, ОЗУ и т.д.)" rows="4"></textarea>
-        <input type="text" id="p-img" class="admin-input" placeholder="Ссылки на фото через запятую (3-4 шт)">
-        <button class="btn-buy" onclick="saveProduct()">Опубликовать для всех</button>
+        
+        <label style="font-size: 0.8rem; opacity: 0.7;">Загрузить фото из галереи (макс. 4):</label>
+        <input type="file" id="p-file" class="admin-input" multiple accept="image/*" onchange="handleFiles(this.files)">
+        <input type="hidden" id="p-img">
+        <div id="upload-status" style="font-size: 0.7rem; color: var(--primary); margin-bottom: 10px;"></div>
+        
+        <button id="save-btn" class="btn-buy" onclick="saveProduct()" style="margin: 10px 0; width: 100%;">Опубликовать для всех</button>
     </div>
 </div>
 
 <div id="product-overlay" class="overlay" onclick="if(event.target==this) this.style.display='none'">
-    <div class="modal-content" style="text-align: left;">
+    <div class="modal-content">
         <span class="close-btn" onclick="document.getElementById('product-overlay').style.display='none'">&times;</span>
         <div id="m-gallery" class="m-gallery"></div>
-        <h2 id="m-title" style="color:var(--primary); margin-bottom:10px;"></h2>
-        <div style="margin-bottom:15px;">
+        <h2 id="m-title"></h2>
+        <div class="price-box-modal">
             <span id="m-price" class="price-new" style="font-size: 1.4rem;"></span>
             <span id="m-old-price" class="price-old"></span>
         </div>
-        <p id="m-desc" style="white-space:pre-line; font-size:0.9rem; line-height:1.6; opacity:0.8; margin-bottom:20px; border-top:1px solid rgba(128,128,128,0.2); padding-top:15px;"></p>
+        <p id="m-desc"></p>
         <button id="m-buy-btn" class="btn-buy">🛒 В корзину</button>
     </div>
 </div>
 
 <div id="order-overlay" class="overlay">
-    <div class="modal-content" style="text-align: left;">
+    <div class="modal-content" style="text-align: left; padding: 25px;">
         <span class="close-btn" onclick="document.getElementById('order-overlay').style.display='none'">&times;</span>
-        <h2 style="color:var(--primary); margin-bottom:20px;">Оформление заказа</h2>
+        <h2 style="color:var(--primary); margin-bottom:20px; padding:0;">Оформление заказа</h2>
         <input type="text" id="o-name" class="admin-input" placeholder="Ваше имя">
         <input type="text" id="o-phone" class="admin-input" placeholder="Телефон для связи">
         <select id="o-del" class="admin-input" onchange="document.getElementById('o-addr').style.display = (this.value==='Доставка'?'block':'none')">
@@ -207,26 +320,26 @@
             <option value="Доставка">Доставка по городу</option>
         </select>
         <input type="text" id="o-addr" class="admin-input" placeholder="Укажите точный адрес" style="display:none;">
-        <button class="btn-buy" onclick="sendOrder()">Подтвердить заказ</button>
+        <button class="btn-buy" onclick="sendOrder()" style="margin: 10px 0; width: 100%;">Подтвердить заказ</button>
     </div>
 </div>
 
 <div id="success-overlay" class="overlay">
-    <div class="modal-content">
+    <div class="modal-content" style="text-align: center; padding: 25px;">
         <div style="font-size:4rem; color:#4CAF50;"><i class="fas fa-check-circle"></i></div>
-        <h2 style="margin:15px 0;">Заказ принят!</h2>
+        <h2 style="margin:15px 0; padding:0;">Заказ принят!</h2>
         <p id="success-text" style="line-height: 1.6;"></p>
-        <button class="btn-buy" onclick="location.reload()" style="background:#4CAF50; margin-top:20px;">Закрыть</button>
+        <button class="btn-buy" onclick="location.reload()" style="background:#4CAF50; margin-top:20px; width: 100%;">Закрыть</button>
     </div>
 </div>
 
 <div id="cart-sidebar">
     <span class="close-btn" onclick="toggleCart()">&times;</span>
-    <h2 style="color:var(--primary); margin-bottom:20px;">Корзина</h2>
+    <h2 style="color:var(--primary); margin-bottom:20px; padding:0;">Корзина</h2>
     <div id="cart-items" style="flex:1; overflow-y:auto;"></div>
     <div style="border-top:1px solid rgba(128,128,128,0.2); padding-top:20px;">
         <h3>Итого: <span id="cart-total">0</span> смн</h3>
-        <button class="btn-buy" onclick="openOrderForm()" style="margin-top:15px;">Заказать</button>
+        <button class="btn-buy" onclick="openOrderForm()" style="margin-top:15px; width: 100%;">Заказать</button>
     </div>
 </div>
 
@@ -235,36 +348,17 @@
     window.addEventListener('load', () => {
         const video = document.getElementById('intro-video');
         const splash = document.getElementById('splash-screen');
-
-        // Выбор видео в зависимости от ширины экрана
-        if (window.innerWidth <= 768) {
-            video.src = "intro_mobile.mp4"; 
-        } else {
-            video.src = "intro_pc.mp4";
-        }
-
+        if (window.innerWidth <= 768) { video.src = "intro_mobile.mp4"; } else { video.src = "intro_pc.mp4"; }
         function hideSplash() {
             splash.style.opacity = '0';
-            setTimeout(() => {
-                splash.style.display = 'none';
-                document.body.classList.remove('loading');
-                document.body.style.overflow = 'auto';
-            }, 800);
+            setTimeout(() => { splash.style.display = 'none'; document.body.classList.remove('loading'); document.body.style.overflow = 'auto'; }, 800);
         }
-
         video.onended = hideSplash;
-
-        // Страховка на 10 секунд
-        setTimeout(() => {
-            if (splash.style.display !== 'none') hideSplash();
-        }, 10000);
+        setTimeout(() => { if (splash.style.display !== 'none') hideSplash(); }, 10000);
     });
 
     /* --- ЛОГИКА FIREBASE --- */
-    const firebaseConfig = {
-        databaseURL: "https://goodoktj-fdfaf-default-rtdb.firebaseio.com/" 
-    };
-
+    const firebaseConfig = { databaseURL: "https://goodoktj-fdfaf-default-rtdb.firebaseio.com/" };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
@@ -287,29 +381,73 @@
         render();
     });
 
+    /* --- ФУНКЦИЯ ОБРАБОТКИ МУЛЬТИЗАГРУЗКИ С CANVAS-СЖАТИЕМ --- */
+    async function handleFiles(files) {
+        const status = document.getElementById('upload-status');
+        const imgInput = document.getElementById('p-img');
+        const saveBtn = document.getElementById('save-btn');
+        
+        // Лимит: только первые 4 фото
+        const filesToProcess = Array.from(files).slice(0, 4);
+        
+        status.innerText = "Сжимаем фото...";
+        saveBtn.disabled = true;
+        
+        let compressedUrls = [];
+
+        for (let file of filesToProcess) {
+            try {
+                const bitmap = await createImageBitmap(file);
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+
+                const maxWidth = 800;
+                const scale = maxWidth / bitmap.width;
+                canvas.width = maxWidth;
+                canvas.height = bitmap.height * scale;
+
+                ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+                const compressedData = canvas.toDataURL('image/jpeg', 0.7);
+                compressedUrls.push(compressedData);
+            } catch (err) {
+                console.error("Ошибка при сжатии:", err);
+            }
+        }
+
+        imgInput.value = compressedUrls.join('|');
+        // Улучшенный визуальный статус
+        status.innerText = `Готово! Обработано ${compressedUrls.length} фото.`;
+        saveBtn.disabled = false;
+    }
+
     function handleAdmin() {
         if (!isAdmin && prompt("Пароль администратора:") === "Behruz9999") {
             isAdmin = true;
-            document.getElementById('add-p-btn').style.display = 'flex';
+            document.getElementById('add-p-btn').style.display = 'flex'; 
             render();
         }
     }
     function openAdminModal() { document.getElementById('admin-overlay').style.display = 'flex'; }
-    function closeAdmin() { document.getElementById('admin-overlay').style.display = 'none'; resetAdminForm(); }
+    function closeAdmin() { 
+        document.getElementById('admin-overlay').style.display = 'none'; 
+        resetAdminForm(); 
+        document.getElementById('upload-status').innerText = "";
+    }
 
     function saveProduct() {
         const id = document.getElementById('edit-id').value || Date.now();
         const name = document.getElementById('p-name').value;
         const price = document.getElementById('p-price').value;
         const imgStr = document.getElementById('p-img').value;
-        if(!name || !price || !imgStr) return alert("Заполните название, цену и фото!");
+        if(!name || !price || !imgStr) return alert("Заполните название, цену и добавьте фото!");
+        
         const pData = {
             id: id,
             name, price,
             oldPrice: document.getElementById('p-old-price').value,
             cat: document.getElementById('p-cat').value,
             desc: document.getElementById('p-desc').value,
-            imgs: imgStr.split(',').map(s => s.trim())
+            imgs: imgStr.split('|')
         };
         db.ref('products/' + id).set(pData).then(() => closeAdmin());
     }
@@ -323,7 +461,8 @@
         document.getElementById('p-old-price').value = p.oldPrice || "";
         document.getElementById('p-cat').value = p.cat;
         document.getElementById('p-desc').value = p.desc;
-        document.getElementById('p-img').value = p.imgs.join(', ');
+        // Исправлено: корректное объединение массива ссылок для скрытого инпута
+        document.getElementById('p-img').value = Array.isArray(p.imgs) ? p.imgs.join('|') : p.imgs;
         openAdminModal();
     }
 
@@ -332,7 +471,12 @@
         if(confirm("Удалить этот товар навсегда?")) db.ref('products/' + id).remove();
     }
 
-    function resetAdminForm() { document.getElementById('edit-id').value = ""; document.querySelectorAll('.admin-input').forEach(i => i.value=""); }
+    function resetAdminForm() { 
+        document.getElementById('edit-id').value = ""; 
+        document.querySelectorAll('.admin-input').forEach(i => i.value="");
+        document.getElementById('p-file').value = ""; 
+        document.getElementById('p-img').value = "";
+    }
 
     function render() {
         const grid = document.getElementById('main-grid');
@@ -356,7 +500,7 @@
                     <button class="admin-btn-card" onclick="deleteP(${p.id}, event)" style="background:#e74c3c"><i class="fas fa-trash"></i></button>
                 </div>
                 ${p.oldPrice ? '<div class="promo-badge">АКЦИЯ</div>' : ''}
-                <div class="p-img" style="background-image:url('${p.imgs[0]}')"></div>
+                <div class="p-img" style="background-image:url('${Array.isArray(p.imgs) ? p.imgs[0] : p.imgs}')"></div>
                 <div class="p-info">
                     <h3>${p.name}</h3>
                     <div class="price-box"><span class="price-new">${p.price} с.</span>${p.oldPrice ? `<span class="price-old">${p.oldPrice} с.</span>` : ''}</div>
@@ -385,13 +529,17 @@
 
     function openP(id) {
         const p = products.find(x => x.id == id);
-        document.getElementById('m-gallery').innerHTML = p.imgs.map(s => `<img src="${s}">`).join('');
+        const images = Array.isArray(p.imgs) ? p.imgs : [p.imgs];
+        document.getElementById('m-gallery').innerHTML = images.map(s => `<img src="${s}">`).join('');
         document.getElementById('m-title').innerText = p.name;
         document.getElementById('m-price').innerText = p.price + " смн";
         document.getElementById('m-old-price').innerText = p.oldPrice ? p.oldPrice + " смн" : "";
         document.getElementById('m-desc').innerText = p.desc || "Характеристики уточняйте у менеджера.";
         document.getElementById('m-buy-btn').onclick = () => { buy(p.id); document.getElementById('product-overlay').style.display='none'; };
-        document.getElementById('product-overlay').style.display = 'flex';
+        
+        const overlay = document.getElementById('product-overlay');
+        overlay.style.display = 'flex';
+        overlay.querySelector('.modal-content').scrollTop = 0;
     }
 
     function buy(id) { cart.push(products.find(x => x.id == id)); updateCartUI(); }
