@@ -58,7 +58,32 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
         body { background-color: var(--bg); color: var(--text); transition: 0.3s; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; }
 
-        header { background: var(--primary); padding: 20px; text-align: center; color: white; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        header { background: var(--primary); padding: 20px; text-align: center; color: white; box-shadow: 0 5px 20px rgba(0,0,0,0.1); position: relative; }
+        
+        .header-btns {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto 10px;
+        }
+        .header-left-group { display: flex; gap: 10px; }
+
+        .header-btn { width: 45px; height: 45px; background: white; border: none; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        
+        .header-cart-btn { 
+            background: white; 
+            color: var(--primary); 
+            padding: 10px 20px; 
+            border-radius: 12px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
         #smart-search { width: 100%; max-width: 600px; padding: 12px 25px; border-radius: 30px; border: none; background: rgba(255,255,255,0.9); color: #333; outline: none; margin-top: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         #smart-search::placeholder { color: #888; }
 
@@ -104,19 +129,24 @@
 
         .m-gallery {
             display: flex;
-            flex-direction: column;
+            flex-direction: row; 
+            overflow-x: auto; 
+            scroll-snap-type: x mandatory;
             gap: 10px;
             background: #fff;
             padding: 10px;
+            scrollbar-width: none;
         }
+        .m-gallery::-webkit-scrollbar { display: none; }
 
         .m-gallery img {
-            width: 100%;
+            min-width: 100%;
             height: auto;
             max-height: 500px;
             object-fit: contain;
             border-radius: 12px;
             background: #f9f9f9;
+            scroll-snap-align: start;
         }
 
         .modal-content h2 {
@@ -195,20 +225,25 @@
 
         .admin-controls { position: absolute; top: 5px; right: 5px; display: none; gap: 5px; z-index: 20; }
         .admin-btn-card { width: 30px; height: 30px; border-radius: 8px; border: none; cursor: pointer; color: white; display: flex; align-items: center; justify-content: center; }
-        .admin-input { width: 100%; padding: 12px; background: var(--input); border: 1px solid rgba(128,128,128,0.2); color: var(--text); border-radius: 10px; margin-bottom: 12px; outline: none; text-align: left; }
+        .admin-input { width: 100%; padding: 12px; background: var(--input); border: 1px solid rgba(128, 128, 128, 0.2); color: var(--text); border-radius: 10px; margin-bottom: 12px; outline: none; text-align: left; }
 
         footer { background: var(--card); padding: 40px 20px; border-top: 1px solid rgba(255,153,0,0.2); margin-top: 50px; text-align: center; }
         .social-links { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
         .social-item { text-decoration: none; color: white !important; padding: 10px 20px; border-radius: 10px; font-weight: bold; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
 
         .btn-buy { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; font-size: 1rem; }
-        .theme-toggle { position: fixed; bottom: 30px; left: 30px; width: 50px; height: 50px; background: var(--card); border: 2px solid var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2000; color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        .cart-btn { position: fixed; top: 20px; right: 20px; background: var(--primary); color: white; padding: 10px 20px; border-radius: 30px; font-weight: bold; cursor: pointer; z-index: 1000; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-        .admin-trigger { position: fixed; bottom: 30px; left: 100px; opacity: 0.4; background: none; border: none; color: var(--text); font-size: 24px; cursor: pointer; z-index: 1000; }
         
         #cart-sidebar { position: fixed; top: 0; right: -400px; width: 360px; height: 100%; background: var(--card); z-index: 4000; padding: 30px; transition: 0.4s; border-left: 2px solid var(--primary); display: flex; flex-direction: column; box-shadow: -5px 0 20px rgba(0,0,0,0.1); }
         #cart-sidebar.active { right: 0; }
         .cart-item-ui { display:flex; justify-content:space-between; margin-bottom:10px; background:rgba(128,128,128,0.05); padding:10px; border-radius:10px; align-items:center; border: 1px solid rgba(128,128,128,0.1); }
+
+        .cat-manager-list { margin-top: 10px; border: 1px solid rgba(128,128,128,0.2); border-radius: 10px; padding: 10px; max-height: 200px; overflow-y: auto; }
+        .cat-item-edit { display: flex; align-items: center; justify-content: space-between; padding: 8px; border-bottom: 1px solid rgba(128,128,128,0.1); font-size: 0.9rem; }
+        .cat-item-edit:last-child { border-bottom: none; }
+        .cat-actions { display: flex; gap: 8px; }
+        .cat-btn { background: none; border: none; cursor: pointer; color: #888; font-size: 1rem; }
+        .cat-btn:hover { color: var(--primary); }
+        .cat-btn.del:hover { color: #ff4444; }
     </style>
 </head>
 <body class="loading">
@@ -217,13 +252,16 @@
     <video id="intro-video" autoplay muted playsinline preload="auto"></video>
 </div>
 
-<button class="theme-toggle" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
-<button class="admin-trigger" onclick="handleAdmin()"><i class="fas fa-user-shield"></i></button>
-<button id="add-p-btn" class="add-p-btn" onclick="openAdminModal()"><i class="fas fa-plus"></i></button>
-
-<div class="cart-btn" onclick="toggleCart()">🛒 <span id="cart-count">0</span></div>
-
 <header>
+    <div class="header-btns">
+        <div class="header-left-group">
+            <div class="header-btn" onclick="toggleTheme()"><i class="fas fa-moon"></i></div>
+            <div class="header-btn" onclick="handleAdmin()"><i class="fas fa-user-shield"></i></div>
+        </div>
+        <div class="header-cart-btn" onclick="toggleCart()">
+            <i class="fas fa-shopping-cart"></i> <span id="cart-count">0</span>
+        </div>
+    </div>
     <h1>GooDok.TJ</h1>
     <input type="text" id="smart-search" placeholder="Поиск по товарам и параметрам..." oninput="render()">
 </header>
@@ -236,12 +274,13 @@
     <p id="loader" style="text-align: center; margin-top: 50px;">Загрузка товаров из базы...</p>
 </div>
 
+<button id="add-p-btn" class="add-p-btn" onclick="openAdminModal()"><i class="fas fa-plus"></i></button>
+
 <footer>
     <div class="footer-info">
         <h3>2026 GooDok.TJ/Душанбе</h3>
         <div class="social-links">
             <a href="https://www.instagram.com/goodok.tj?igsh=bWRyMm9iMDZzcm1j" class="social-item" style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);"><i class="fab fa-instagram"></i> Instagram</a>
-            
             <a href="https://wa.me/992555572988" class="social-item" style="background:#25D366;"><i class="fab fa-whatsapp"></i> WhatsApp</a>
             <a href="https://t.me/Goodok_tj" class="social-item" style="background:#0088cc;"><i class="fab fa-telegram"></i> Telegram</a>
             <div class="social-item" style="background:#444;"><i class="fas fa-phone"></i> +992 555 572 988</div>
@@ -253,33 +292,12 @@
     <div class="modal-content" style="text-align: left; padding: 25px;">
         <span class="close-btn" onclick="closeAdmin()">&times;</span>
         <h2 style="color:var(--primary); margin-bottom:20px; padding:0;">Управление товаром</h2>
+        <button class="btn-buy" onclick="openCatManager()" style="background:#444; margin-bottom:20px; height:40px; font-size:0.8rem;">⚙️ Управление категориями</button>
+
         <input type="hidden" id="edit-id">
         <input type="text" id="p-name" class="admin-input" placeholder="Название товара">
-        <select id="p-cat" class="admin-input">
-            <optgroup label="Основные категории">
-                <option value="Ноутбуки">Ноутбуки</option>
-                <option value="Принтеры">Принтеры</option>
-                <option value="Телефон">Телефон</option>
-                <option value="Монитор">Монитор</option>
-                <option value="Наушник">Наушник</option>
-                <option value="Wi-Fi Роутер">Wi-Fi Роутер</option>
-                <option value="Повербанк">Повербанк</option>
-                <option value="SSD и HDD">SSD и HDD</option>
-                <option value="Аксессуары">Аксессуары</option>
-                <option value="Клавиатура и Мышка">Клавиатура и Мышка</option>
-                <option value="Моноблоки">Моноблоки</option>
-                <option value="Сборка ПК">Сборка ПК (Общее)</option>
-            </optgroup>
-            <optgroup label="Комплектующие ПК">
-                <option value="Блок питания для ПК">Блок питания для ПК</option>
-                <option value="Видеокарты">Видеокарты</option>
-                <option value="Кулеры для ПК">Кулеры для ПК</option>
-                <option value="Материнские платы">Материнские платы</option>
-                <option value="Оперативная память для ПК">Оперативная память для ПК</option>
-                <option value="Процессоры">Процессоры</option>
-                <option value="Оперативная память для ноутбук">Оперативная память для ноутбук</option>
-            </optgroup>
-        </select>
+        <select id="p-cat" class="admin-input"></select>
+
         <div style="display:flex; gap:10px;">
             <input type="number" id="p-price" class="admin-input" placeholder="Цена (смн)">
             <input type="number" id="p-old-price" class="admin-input" placeholder="Старая цена (для акции)">
@@ -292,6 +310,31 @@
         <div id="upload-status" style="font-size: 0.7rem; color: var(--primary); margin-bottom: 10px;"></div>
         
         <button id="save-btn" class="btn-buy" onclick="saveProduct()" style="margin: 10px 0; width: 100%;">Опубликовать для всех</button>
+    </div>
+</div>
+
+<div id="cat-overlay" class="overlay">
+    <div class="modal-content" style="padding: 25px;">
+        <span class="close-btn" onclick="document.getElementById('cat-overlay').style.display='none'">&times;</span>
+        <h2 style="color:var(--primary); margin-bottom:15px;">Управление меню</h2>
+        
+        <div style="margin-bottom:20px;">
+            <p style="font-size:0.8rem; font-weight:bold;">Основные категории:</p>
+            <div class="cat-manager-list" id="list-main-cats"></div>
+            <div style="display:flex; gap:5px; margin-top:10px;">
+                <input type="text" id="new-main-cat" class="admin-input" style="margin:0; height:35px;" placeholder="Новая категория">
+                <button class="btn-buy" onclick="addMainCat()" style="width:50px; margin:0; height:35px;">+</button>
+            </div>
+        </div>
+
+        <div style="margin-bottom:10px;">
+            <p style="font-size:0.8rem; font-weight:bold;">Подкатегории для: <select id="cat-select-for-sub" onchange="updateCatLists()" class="admin-input" style="display:inline; width:auto; padding:2px; height:25px; margin:0;"></select></p>
+            <div class="cat-manager-list" id="list-sub-cats"></div>
+            <div style="display:flex; gap:5px; margin-top:10px;">
+                <input type="text" id="new-sub-cat" class="admin-input" style="margin:0; height:35px;" placeholder="Добавить подкатегорию">
+                <button class="btn-buy" onclick="addSubCat()" style="width:50px; margin:0; height:35px;">+</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -344,7 +387,6 @@
 </div>
 
 <script>
-    /* --- СКРИПТ УПРАВЛЕНИЯ ЗАСТАВКОЙ --- */
     window.addEventListener('load', () => {
         const video = document.getElementById('intro-video');
         const splash = document.getElementById('splash-screen');
@@ -357,7 +399,6 @@
         setTimeout(() => { if (splash.style.display !== 'none') hideSplash(); }, 10000);
     });
 
-    /* --- ЛОГИКА FIREBASE --- */
     const firebaseConfig = { databaseURL: "https://goodoktj-fdfaf-default-rtdb.firebaseio.com/" };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
@@ -366,89 +407,110 @@
     const chatId = '1949497960';
 
     let products = [];
-    let categories = ["Ноутбуки", "Принтеры", "Телефон", "Монитор", "Наушник", "Wi-Fi Роутер", "Повербанк", "SSD и HDD", "Аксессуары", "Клавиатура и Мышка", "Моноблоки", "Сборка ПК"];
-    let subCats = ["Блок питания для ПК", "Видеокарты", "Кулеры для ПК", "Материнские платы", "Оперативная память для ПК", "Процессоры", "Оперативная память для ноутбук"];
+    let categories = ["Ноутбуки", "Принтеры", "Телефон", "Сборка ПК"];
+    let subCatsMap = { "Сборка ПК": ["Блок питания для ПК", "Видеокарты", "Кулеры для ПК", "Материнские платы", "Оперативная память для ПК", "Процессоры", "Оперативная память для ноутбук"] };
 
     let cart = [];
     let currentCat = "Все";
     let currentSub = "Все";
     let isAdmin = false;
+    let currentImgsArray = [];
 
-    db.ref('products').on('value', (snapshot) => {
-        const data = snapshot.val();
-        products = data ? Object.values(data) : [];
-        document.getElementById('loader').style.display = 'none';
-        render();
-    });
+    db.ref('settings/categories').on('value', (snap) => { if(snap.val()) categories = snap.val(); updateAdminSelect(); updateCatLists(); render(); });
+    db.ref('settings/subCatsMap').on('value', (snap) => { if(snap.val()) subCatsMap = snap.val(); updateCatLists(); render(); });
+    db.ref('products').on('value', (snapshot) => { products = snapshot.val() ? Object.values(snapshot.val()) : []; document.getElementById('loader').style.display = 'none'; render(); });
 
-    /* --- ФУНКЦИЯ ОБРАБОТКИ МУЛЬТИЗАГРУЗКИ С CANVAS-СЖАТИЕМ --- */
+    function openCatManager() { 
+        const select = document.getElementById('cat-select-for-sub');
+        select.innerHTML = categories.map(c => `<option value="${c}">${c}</option>`).join('');
+        document.getElementById('cat-overlay').style.display = 'flex'; 
+        updateCatLists(); 
+    }
+
+    function updateCatLists() {
+        const renderList = (arr, id, type) => {
+            document.getElementById(id).innerHTML = (arr || []).map((c, i) => `
+                <div class="cat-item-edit">
+                    <span>${c}</span>
+                    <div class="cat-actions">
+                        <button class="cat-btn" onclick="moveCat('${type}', ${i}, -1)"><i class="fas fa-arrow-up"></i></button>
+                        <button class="cat-btn" onclick="moveCat('${type}', ${i}, 1)"><i class="fas fa-arrow-down"></i></button>
+                        <button class="cat-btn del" onclick="delCat('${type}', ${i})"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>`).join('');
+        };
+        const selectedMain = document.getElementById('cat-select-for-sub').value;
+        renderList(categories, 'list-main-cats', 'main');
+        renderList(subCatsMap[selectedMain], 'list-sub-cats', 'sub');
+    }
+
+    function addMainCat() {
+        let val = document.getElementById('new-main-cat').value.trim();
+        if(val && !categories.includes(val)) { categories.push(val); db.ref('settings/categories').set(categories); document.getElementById('new-main-cat').value=''; }
+    }
+    function addSubCat() {
+        const main = document.getElementById('cat-select-for-sub').value;
+        const val = document.getElementById('new-sub-cat').value.trim();
+        if(!val || !main) return;
+        if(!subCatsMap[main]) subCatsMap[main] = [];
+        if(!subCatsMap[main].includes(val)) { subCatsMap[main].push(val); db.ref('settings/subCatsMap').set(subCatsMap); document.getElementById('new-sub-cat').value=''; }
+    }
+    function delCat(type, idx) {
+        if(!confirm("Удалить?")) return;
+        if(type==='main') { categories.splice(idx,1); db.ref('settings/categories').set(categories); }
+        else { const main = document.getElementById('cat-select-for-sub').value; subCatsMap[main].splice(idx,1); db.ref('settings/subCatsMap').set(subCatsMap); }
+    }
+    function moveCat(type, idx, dir) {
+        let arr, path;
+        if(type==='main') { arr = categories; path = 'settings/categories'; }
+        else { const main = document.getElementById('cat-select-for-sub').value; arr = subCatsMap[main]; path = 'settings/subCatsMap'; }
+        let target = idx + dir;
+        if(target >= 0 && target < arr.length) { [arr[idx], arr[target]] = [arr[target], arr[idx]]; db.ref(path).set(type==='main' ? arr : subCatsMap); }
+    }
+
+    function updateAdminSelect() {
+        const select = document.getElementById('p-cat');
+        let options = categories.map(c => {
+            let subs = subCatsMap[c] || [];
+            if(subs.length === 0) return `<option value="${c}">${c}</option>`;
+            return `<optgroup label="${c}">${subs.map(s => `<option value="${s}">${s}</option>`).join('')}</optgroup>`;
+        }).join('');
+        select.innerHTML = options;
+    }
+
     async function handleFiles(files) {
         const status = document.getElementById('upload-status');
         const imgInput = document.getElementById('p-img');
         const saveBtn = document.getElementById('save-btn');
-        
-        // Лимит: только первые 4 фото
         const filesToProcess = Array.from(files).slice(0, 4);
-        
-        status.innerText = "Сжимаем фото...";
+        status.innerText = "Сжимаем...";
         saveBtn.disabled = true;
-        
-        let compressedUrls = [];
-
+        currentImgsArray = [];
         for (let file of filesToProcess) {
-            try {
-                const bitmap = await createImageBitmap(file);
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-
-                const maxWidth = 800;
-                const scale = maxWidth / bitmap.width;
-                canvas.width = maxWidth;
-                canvas.height = bitmap.height * scale;
-
-                ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
-                const compressedData = canvas.toDataURL('image/jpeg', 0.7);
-                compressedUrls.push(compressedData);
-            } catch (err) {
-                console.error("Ошибка при сжатии:", err);
-            }
+            const bitmap = await createImageBitmap(file);
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const maxWidth = 800;
+            const scale = maxWidth / bitmap.width;
+            canvas.width = maxWidth; canvas.height = bitmap.height * scale;
+            ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+            currentImgsArray.push(canvas.toDataURL('image/jpeg', 0.7));
         }
-
-        imgInput.value = compressedUrls.join('|');
-        // Улучшенный визуальный статус
-        status.innerText = `Готово! Обработано ${compressedUrls.length} фото.`;
+        imgInput.value = currentImgsArray.join('|');
+        status.innerText = "Готово!";
         saveBtn.disabled = false;
     }
 
-    function handleAdmin() {
-        if (!isAdmin && prompt("Пароль администратора:") === "Behruz9999") {
-            isAdmin = true;
-            document.getElementById('add-p-btn').style.display = 'flex'; 
-            render();
-        }
-    }
+    function handleAdmin() { if (!isAdmin && prompt("Пароль:") === "Behruz9999") { isAdmin = true; document.getElementById('add-p-btn').style.display = 'flex'; render(); } }
     function openAdminModal() { document.getElementById('admin-overlay').style.display = 'flex'; }
-    function closeAdmin() { 
-        document.getElementById('admin-overlay').style.display = 'none'; 
-        resetAdminForm(); 
-        document.getElementById('upload-status').innerText = "";
-    }
+    function closeAdmin() { document.getElementById('admin-overlay').style.display = 'none'; resetAdminForm(); }
 
     function saveProduct() {
         const id = document.getElementById('edit-id').value || Date.now();
         const name = document.getElementById('p-name').value;
         const price = document.getElementById('p-price').value;
-        const imgStr = document.getElementById('p-img').value;
-        if(!name || !price || !imgStr) return alert("Заполните название, цену и добавьте фото!");
-        
-        const pData = {
-            id: id,
-            name, price,
-            oldPrice: document.getElementById('p-old-price').value,
-            cat: document.getElementById('p-cat').value,
-            desc: document.getElementById('p-desc').value,
-            imgs: imgStr.split('|')
-        };
+        if(!name || !price) return;
+        const pData = { id, name, price, oldPrice: document.getElementById('p-old-price').value, cat: document.getElementById('p-cat').value, desc: document.getElementById('p-desc').value, imgs: document.getElementById('p-img').value.split('|') };
         db.ref('products/' + id).set(pData).then(() => closeAdmin());
     }
 
@@ -461,38 +523,32 @@
         document.getElementById('p-old-price').value = p.oldPrice || "";
         document.getElementById('p-cat').value = p.cat;
         document.getElementById('p-desc').value = p.desc;
-        // Исправлено: корректное объединение массива ссылок для скрытого инпута
         document.getElementById('p-img').value = Array.isArray(p.imgs) ? p.imgs.join('|') : p.imgs;
         openAdminModal();
     }
 
-    function deleteP(id, e) {
-        e.stopPropagation();
-        if(confirm("Удалить этот товар навсегда?")) db.ref('products/' + id).remove();
-    }
-
-    function resetAdminForm() { 
-        document.getElementById('edit-id').value = ""; 
-        document.querySelectorAll('.admin-input').forEach(i => i.value="");
-        document.getElementById('p-file').value = ""; 
-        document.getElementById('p-img').value = "";
-    }
+    function deleteP(id, e) { e.stopPropagation(); if(confirm("Удалить?")) db.ref('products/' + id).remove(); }
+    function resetAdminForm() { document.getElementById('edit-id').value = ""; document.querySelectorAll('.admin-input').forEach(i => i.value=""); }
 
     function render() {
         const grid = document.getElementById('main-grid');
         const search = document.getElementById('smart-search').value.toLowerCase();
         document.getElementById('category-list').innerHTML = `<div class="nav-link ${currentCat==='Все'?'active':''}" onclick="setCat('Все', this)">Все</div>` + 
             categories.map(c => `<div class="nav-link ${currentCat===c?'active':''}" onclick="setCat('${c}', this)">${c}</div>`).join('');
-
+        
         const filtered = products.filter(p => {
-            const isPCComp = subCats.includes(p.cat);
-            let match = false;
-            if(currentCat === "Все") match = true;
-            else if(currentCat === "Сборка ПК") match = currentSub === "Все" ? isPCComp : p.cat === currentSub;
-            else match = (p.cat === currentCat);
+            let match = currentCat === "Все";
+            if(!match) {
+                if(p.cat === currentCat) match = true;
+                for(let key in subCatsMap) {
+                    if(key === currentCat && subCatsMap[key].includes(p.cat)) {
+                        match = (currentSub === "Все" || p.cat === currentSub);
+                    }
+                }
+            }
             return match && p.name.toLowerCase().includes(search);
         });
-
+        
         grid.innerHTML = filtered.map(p => `
             <div class="product-card" onclick="openP(${p.id})">
                 <div class="admin-controls" style="display:${isAdmin?'flex':'none'}">
@@ -503,7 +559,7 @@
                 <div class="p-img" style="background-image:url('${Array.isArray(p.imgs) ? p.imgs[0] : p.imgs}')"></div>
                 <div class="p-info">
                     <h3>${p.name}</h3>
-                    <div class="price-box"><span class="price-new">${p.price} с.</span>${p.oldPrice ? `<span class="price-old">${p.oldPrice} с.</span>` : ''}</div>
+                    <div class="price-box"><span class="price-new">${p.price} с.</span></div>
                     <button class="btn-buy" style="margin-top:10px; padding:8px; font-size:0.8rem;" onclick="event.stopPropagation(); buy(${p.id})">В корзину</button>
                 </div>
             </div>`).join('');
@@ -512,10 +568,11 @@
     function setCat(cat, el) {
         currentCat = cat; currentSub = "Все";
         const pcSub = document.getElementById('pc-sub-nav');
-        if(cat === "Сборка ПК") {
+        const subs = subCatsMap[cat] || [];
+        if(subs.length > 0) {
             pcSub.style.display = 'flex';
-            pcSub.innerHTML = `<div class="sub-link active" onclick="setSub('Все', this)">Все запчасти</div>` + 
-                subCats.map(s => `<div class="sub-link" onclick="setSub('${s}', this)">${s}</div>`).join('');
+            pcSub.innerHTML = `<div class="sub-link active" onclick="setSub('Все', this)">Все ${cat}</div>` + 
+                subs.map(s => `<div class="sub-link" onclick="setSub('${s}', this)">${s}</div>`).join('');
         } else { pcSub.style.display = 'none'; }
         render();
     }
@@ -533,13 +590,9 @@
         document.getElementById('m-gallery').innerHTML = images.map(s => `<img src="${s}">`).join('');
         document.getElementById('m-title').innerText = p.name;
         document.getElementById('m-price').innerText = p.price + " смн";
-        document.getElementById('m-old-price').innerText = p.oldPrice ? p.oldPrice + " смн" : "";
-        document.getElementById('m-desc').innerText = p.desc || "Характеристики уточняйте у менеджера.";
+        document.getElementById('m-desc').innerText = p.desc || "";
         document.getElementById('m-buy-btn').onclick = () => { buy(p.id); document.getElementById('product-overlay').style.display='none'; };
-        
-        const overlay = document.getElementById('product-overlay');
-        overlay.style.display = 'flex';
-        overlay.querySelector('.modal-content').scrollTop = 0;
+        document.getElementById('product-overlay').style.display = 'flex';
     }
 
     function buy(id) { cart.push(products.find(x => x.id == id)); updateCartUI(); }
@@ -549,37 +602,42 @@
     async function sendOrder() {
         const name = document.getElementById('o-name').value;
         const phone = document.getElementById('o-phone').value;
-        const deliv = document.getElementById('o-del').value;
-        const addr = document.getElementById('o-addr').value;
-        if(!name || !phone) return alert("Введите имя и номер телефона!");
+        const deliveryType = document.getElementById('o-del').value;
+        const address = document.getElementById('o-addr').value;
+
+        if(!name || !phone) return alert("Введите данные!");
+        
         let orderList = cart.map((i, idx) => `${idx+1}. ${i.name} (${i.price} смн)`).join('\n');
         let total = document.getElementById('cart-total').innerText;
-        let msg = `🛍 НОВЫЙ ЗАКАЗ!\n👤 Имя: ${name}\n📞 Тел: ${phone}\n🚚: ${deliv}${deliv==='Доставка'?'\n📍: '+addr:''}\n\n🛒 Товары:\n${orderList}\n💰 ИТОГО: ${total} смн`;
+        
+        let msg = `🛍 GooDok ЗАКАЗ!\n\n`;
+        msg += `👤 Имя: ${name}\n`;
+        msg += `📞 Тел: ${phone}\n`;
+        msg += `🚚 Способ: ${deliveryType}\n`;
+        if(deliveryType === 'Доставка') {
+            msg += `📍 Адрес: ${address}\n`;
+        }
+        msg += `\n🛒 Товары:\n${orderList}\n\n💰 ИТОГО: ${total} смн`;
+
         try {
             await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
+                method: 'POST', headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({chat_id: chatId, text: msg})
             });
             document.getElementById('order-overlay').style.display = 'none';
-            document.getElementById('success-text').innerHTML = `Ваш заказ успешно принят, спасибо <b>${name}</b>! <br>Мы свяжемся с вами в ближайшее время!`;
             document.getElementById('success-overlay').style.display = 'flex';
             cart = []; updateCartUI();
-        } catch(e) { alert("Ошибка при отправке заказа!"); }
+        } catch(e) { alert("Ошибка!"); }
     }
 
     function updateCartUI() {
         document.getElementById('cart-count').innerText = cart.length;
         let total = 0;
-        document.getElementById('cart-items').innerHTML = cart.map((item, idx) => {
-            total += Number(item.price);
-            return `<div class="cart-item-ui"><span>${item.name}</span><b>${item.price}</b><i class="fas fa-times" style="color:red; cursor:pointer;" onclick="cart.splice(${idx},1); updateCartUI();"></i></div>`;
-        }).join('');
+        document.getElementById('cart-items').innerHTML = cart.map((item, idx) => { total += Number(item.price); return `<div class="cart-item-ui"><span>${item.name}</span><b>${item.price}</b><i class="fas fa-times" onclick="cart.splice(${idx},1); updateCartUI();"></i></div>`; }).join('');
         document.getElementById('cart-total').innerText = total;
     }
 
-    function toggleTheme() { document.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme')==='light'?'dark':'light'); }
-
+    function toggleTheme() { const html = document.documentElement; html.setAttribute('data-theme', html.getAttribute('data-theme')==='light'?'dark':'light'); }
     render();
 </script>
 </body>
