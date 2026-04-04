@@ -635,6 +635,10 @@
                 body: JSON.stringify({chat_id: chatId, text: msg})
             });
             document.getElementById('order-overlay').style.display = 'none';
+            
+            // ОБНОВЛЕННОЕ СООБЩЕНИЕ
+            document.getElementById('success-text').innerHTML = `Спасибо, <b>${name}</b>, что выбрали GooDok.TJ!<br><br>Мы свяжемся с вами в ближайшее время.<br>Для быстрого ответа можете позвонить на номер:<br><a href="tel:+992555572988" style="color:#FF9900; font-weight:bold; text-decoration:none;">+992 555 572 988</a>`;
+            
             document.getElementById('success-overlay').style.display = 'flex';
             cart = []; updateCartUI();
         } catch(e) { alert("Ошибка!"); }
