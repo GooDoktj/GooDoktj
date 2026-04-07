@@ -3,7 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GooDok.TJ | Магазин электроники</title>
+    <title>Купить телефон и электронику в Душанбе | GooDok.TJ | Гудок</title>
+    <meta name="description" content="Магазин электроники GooDok.TJ в Душанбе. Широкий выбор телефонов, ноутбуков, принтеров и комплектующих для ПК по лучшим ценам в Таджикистане.">
+    <meta name="keywords" content="купить телефон, гудок, гудоктч, goodok, электроника душанбе, ноутбуки таджикистан, сборка пк душанбе, принтеры canon, купить смартфон, goodok.tj">
+    <meta name="author" content="GooDok.TJ">
+    
+    <meta property="og:title" content="GooDok.TJ — Магазин цифровой техники в Таджикистане">
+    <meta property="og:description" content="Заказывайте телефоны и компьютеры с доставкой по Душанбе.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://goodok.tj">
 
     <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
@@ -118,7 +126,17 @@
         .p-info { padding: 12px; flex-grow: 1; }
         .p-info h3 { font-size: 0.85rem; height: 2.4em; overflow: hidden; margin-bottom: 8px; line-height: 1.2; color: var(--text); }
         .price-new { color: var(--primary); font-weight: bold; font-size: 1.1rem; }
-        .price-old { color: #888; text-decoration: line-through; font-size: 0.8rem; margin-left: 5px; }
+        
+        /* --- ОБНОВЛЕННЫЙ СТИЛЬ ЗАЧЕРКНУТОЙ ЦЕНЫ --- */
+        .price-old { 
+            color: #888; 
+            text-decoration: line-through; 
+            text-decoration-color: #ff4444; /* Красная линия */
+            text-decoration-thickness: 2px; /* Толщина линии */
+            font-size: 0.85rem; 
+            margin-left: 8px;
+            opacity: 0.8;
+        }
 
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 5000; padding: 20px; }
         
@@ -254,6 +272,35 @@
         .cat-btn { background: none; border: none; cursor: pointer; color: #888; font-size: 1rem; }
         .cat-btn:hover { color: var(--primary); }
         .cat-btn.del:hover { color: #ff4444; }
+
+        /* --- НОВЫЕ СТИЛИ ДЛЯ КНОПОК КОЛИЧЕСТВА --- */
+        .qty-control {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f0f0f0;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        .qty-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .qty-num {
+            font-weight: bold;
+            color: var(--text);
+            padding: 0 10px;
+        }
     </style>
 </head>
 <body class="loading">
@@ -267,6 +314,7 @@
         <div class="header-left-group">
             <div class="header-btn" onclick="toggleTheme()"><i class="fas fa-moon"></i></div>
             <div class="header-btn" onclick="handleAdmin()"><i class="fas fa-user-shield"></i></div>
+            <div id="change-pass-btn" class="header-btn" style="display:none;" onclick="openPassModal()"><i class="fas fa-key"></i></div>
         </div>
         <div class="header-cart-btn" onclick="toggleCart()">
             <i class="fas fa-shopping-cart"></i> <span id="cart-count">0</span>
@@ -323,6 +371,16 @@
     </div>
 </div>
 
+<div id="pass-overlay" class="overlay">
+    <div class="modal-content" style="text-align: left; padding: 25px;">
+        <span class="close-btn" onclick="document.getElementById('pass-overlay').style.display='none'">&times;</span>
+        <h2 style="color:var(--primary); margin-bottom:20px; padding:0;">Смена пароля админа</h2>
+        <input type="password" id="old-pass-check" class="admin-input" placeholder="Текущий пароль">
+        <input type="password" id="new-pass-input" class="admin-input" placeholder="Новый пароль">
+        <button class="btn-buy" onclick="confirmNewPass()" style="margin: 10px 0; width: 100%;">Сохранить пароль</button>
+    </div>
+</div>
+
 <div id="cat-overlay" class="overlay">
     <div class="modal-content" style="padding: 25px;">
         <span class="close-btn" onclick="document.getElementById('cat-overlay').style.display='none'">&times;</span>
@@ -358,7 +416,7 @@
             <span id="m-old-price" class="price-old"></span>
         </div>
         <p id="m-desc"></p>
-        <button id="m-buy-btn" class="btn-buy">🛒 В корзину</button>
+        <div id="m-buy-container" style="padding: 0 25px;"></div>
     </div>
 </div>
 
@@ -425,6 +483,13 @@
     let currentSub = "Все";
     let isAdmin = false;
     let currentImgsArray = [];
+    let adminPass = "Behruz9999"; // Начальный пароль
+
+    // ПОЛУЧАЕМ ПАРОЛЬ ИЗ БАЗЫ
+    db.ref('settings/adminPass').on('value', (snap) => {
+        if(snap.val()) adminPass = snap.val();
+        else db.ref('settings/adminPass').set(adminPass);
+    });
 
     db.ref('settings/categories').on('value', (snap) => { if(snap.val()) categories = snap.val(); updateAdminSelect(); updateCatLists(); render(); });
     db.ref('settings/subCatsMap').on('value', (snap) => { if(snap.val()) subCatsMap = snap.val(); updateCatLists(); render(); });
@@ -511,7 +576,31 @@
         saveBtn.disabled = false;
     }
 
-    function handleAdmin() { if (!isAdmin && prompt("Пароль:") === "Behruz9999") { isAdmin = true; document.getElementById('add-p-btn').style.display = 'flex'; render(); } }
+    // ЛОГИКА ВХОДА И ПАРОЛЯ
+    function handleAdmin() { 
+        if (!isAdmin && prompt("Пароль:") === adminPass) { 
+            isAdmin = true; 
+            document.getElementById('add-p-btn').style.display = 'flex'; 
+            document.getElementById('change-pass-btn').style.display = 'flex'; 
+            render(); 
+        } 
+    }
+
+    function openPassModal() { document.getElementById('pass-overlay').style.display = 'flex'; }
+
+    function confirmNewPass() {
+        const oldP = document.getElementById('old-pass-check').value;
+        const newP = document.getElementById('new-pass-input').value;
+        if(oldP !== adminPass) return alert("Старый пароль неверный!");
+        if(newP.length < 4) return alert("Пароль слишком короткий!");
+        db.ref('settings/adminPass').set(newP).then(() => {
+            alert("Пароль успешно изменен!");
+            document.getElementById('pass-overlay').style.display = 'none';
+            document.getElementById('old-pass-check').value = "";
+            document.getElementById('new-pass-input').value = "";
+        });
+    }
+
     function openAdminModal() { document.getElementById('admin-overlay').style.display = 'flex'; }
     function closeAdmin() { document.getElementById('admin-overlay').style.display = 'none'; resetAdminForm(); }
 
@@ -559,7 +648,20 @@
             return match && p.name.toLowerCase().includes(search);
         });
         
-        grid.innerHTML = filtered.map(p => `
+        grid.innerHTML = filtered.map(p => {
+            const cartItem = cart.find(c => c.id == p.id);
+            let buyButtonHtml = `<button class="btn-buy" style="margin-top:10px; padding:8px; font-size:0.8rem;" onclick="event.stopPropagation(); buy(${p.id})">В корзину</button>`;
+            
+            if(cartItem) {
+                buyButtonHtml = `
+                    <div class="qty-control" onclick="event.stopPropagation()">
+                        <button class="qty-btn" onclick="updateQty(${p.id}, -1)">-</button>
+                        <span class="qty-num">${cartItem.count}</span>
+                        <button class="qty-btn" onclick="updateQty(${p.id}, 1)">+</button>
+                    </div>`;
+            }
+
+            return `
             <div class="product-card" onclick="openP(${p.id})">
                 <div class="admin-controls" style="display:${isAdmin?'flex':'none'}">
                     <button class="admin-btn-card" onclick="editP(${p.id}, event)" style="background:#2ecc71"><i class="fas fa-edit"></i></button>
@@ -569,10 +671,14 @@
                 <div class="p-img" style="background-image:url('${Array.isArray(p.imgs) ? p.imgs[0] : p.imgs}')"></div>
                 <div class="p-info">
                     <h3>${p.name}</h3>
-                    <div class="price-box"><span class="price-new">${p.price} с.</span></div>
-                    <button class="btn-buy" style="margin-top:10px; padding:8px; font-size:0.8rem;" onclick="event.stopPropagation(); buy(${p.id})">В корзину</button>
+                    <div class="price-box">
+                        <span class="price-new">${p.price} с.</span>
+                        ${p.oldPrice ? `<span class="price-old">${p.oldPrice} с.</span>` : ''}
+                    </div>
+                    ${buyButtonHtml}
                 </div>
-            </div>`).join('');
+            </div>`;
+        }).join('');
     }
 
     function setCat(cat, el) {
@@ -597,15 +703,51 @@
     function openP(id) {
         const p = products.find(x => x.id == id);
         const images = Array.isArray(p.imgs) ? p.imgs : [p.imgs];
+        const cartItem = cart.find(c => c.id == id);
+
         document.getElementById('m-gallery').innerHTML = images.map(s => `<img src="${s}">`).join('');
         document.getElementById('m-title').innerText = p.name;
         document.getElementById('m-price').innerText = p.price + " смн";
+        document.getElementById('m-old-price').innerText = p.oldPrice ? p.oldPrice + " смн" : "";
         document.getElementById('m-desc').innerText = p.desc || "";
-        document.getElementById('m-buy-btn').onclick = () => { buy(p.id); document.getElementById('product-overlay').style.display='none'; };
+
+        const container = document.getElementById('m-buy-container');
+        if(cartItem) {
+            container.innerHTML = `
+                <div class="qty-control" style="margin: 20px 0 30px;">
+                    <button class="qty-btn" style="height:55px; width:60px;" onclick="updateQty(${p.id}, -1); openP(${p.id})">-</button>
+                    <span class="qty-num" style="font-size:1.5rem;">${cartItem.count}</span>
+                    <button class="qty-btn" style="height:55px; width:60px;" onclick="updateQty(${p.id}, 1); openP(${p.id})">+</button>
+                </div>`;
+        } else {
+            container.innerHTML = `<button class="btn-buy" style="margin: 20px 0 30px; width:100%;" onclick="buy(${p.id}); openP(${p.id})">🛒 В корзину</button>`;
+        }
+        
         document.getElementById('product-overlay').style.display = 'flex';
     }
 
-    function buy(id) { cart.push(products.find(x => x.id == id)); updateCartUI(); }
+    function buy(id) {
+        const item = cart.find(x => x.id == id);
+        if(item) {
+            item.count++;
+        } else {
+            const p = products.find(x => x.id == id);
+            cart.push({...p, count: 1});
+        }
+        updateCartUI();
+        render();
+    }
+
+    function updateQty(id, delta) {
+        const idx = cart.findIndex(x => x.id == id);
+        if(idx !== -1) {
+            cart[idx].count += delta;
+            if(cart[idx].count <= 0) cart.splice(idx, 1);
+        }
+        updateCartUI();
+        render();
+    }
+
     function toggleCart() { document.getElementById('cart-sidebar').classList.toggle('active'); }
     function openOrderForm() { if(cart.length > 0) document.getElementById('order-overlay').style.display = 'flex'; }
 
@@ -617,7 +759,7 @@
 
         if(!name || !phone) return alert("Введите данные!");
         
-        let orderList = cart.map((i, idx) => `${idx+1}. ${i.name} (${i.price} смн)`).join('\n');
+        let orderList = cart.map((i, idx) => `${idx+1}. ${i.name} — ${i.count} шт. (${i.price * i.count} смн)`).join('\n');
         let total = document.getElementById('cart-total').innerText;
         
         let msg = `🛍 GooDok ЗАКАЗ!\n\n`;
@@ -636,25 +778,40 @@
             });
             document.getElementById('order-overlay').style.display = 'none';
             
-            // ОБНОВЛЕННОЕ СООБЩЕНИЕ
             document.getElementById('success-text').innerHTML = `Спасибо, <b>${name}</b>, что выбрали GooDok.TJ!<br><br>Мы свяжемся с вами в ближайшее время.<br>Для быстрого ответа можете позвонить на номер:<br><a href="tel:+992555572988" style="color:#FF9900; font-weight:bold; text-decoration:none;">+992 555 572 988</a>`;
             
             document.getElementById('success-overlay').style.display = 'flex';
-            cart = []; updateCartUI();
+            cart = []; updateCartUI(); render();
         } catch(e) { alert("Ошибка!"); }
     }
 
     function updateCartUI() {
-        document.getElementById('cart-count').innerText = cart.length;
-        let total = 0;
-        document.getElementById('cart-items').innerHTML = cart.map((item, idx) => { total += Number(item.price); return `<div class="cart-item-ui"><span>${item.name}</span><b>${item.price}</b><i class="fas fa-times" onclick="cart.splice(${idx},1); updateCartUI();"></i></div>`; }).join('');
-        document.getElementById('cart-total').innerText = total;
+        let totalCount = 0;
+        let totalPrice = 0;
+        
+        document.getElementById('cart-items').innerHTML = cart.map((item, idx) => {
+            totalCount += item.count;
+            totalPrice += Number(item.price) * item.count;
+            return `
+                <div class="cart-item-ui">
+                    <div style="flex:1">
+                        <div style="font-size:0.9rem; font-weight:bold;">${item.name}</div>
+                        <div style="font-size:0.8rem; color:var(--primary);">${item.count} x ${item.price} смн</div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <b style="white-space:nowrap;">${item.price * item.count}</b>
+                        <i class="fas fa-times" style="color:#ff4444; cursor:pointer;" onclick="cart.splice(${idx},1); updateCartUI(); render();"></i>
+                    </div>
+                </div>`;
+        }).join('');
+
+        document.getElementById('cart-count').innerText = totalCount;
+        document.getElementById('cart-total').innerText = totalPrice;
     }
 
     function toggleTheme() { const html = document.documentElement; html.setAttribute('data-theme', html.getAttribute('data-theme')==='light'?'dark':'light'); }
     render();
 </script>
-<!-- Yandex.Metrika counter -->
 <script type="text/javascript">
     (function(m,e,t,r,i,k,a){
         m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
@@ -666,6 +823,5 @@
     ym(108440363, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
 </script>
 <noscript><div><img src="https://mc.yandex.ru/watch/108440363" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->
 </body>
 </html>
